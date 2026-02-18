@@ -121,6 +121,10 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Pet Shop Prochet no ar: http://localhost:${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Pet Shop Prochet no ar: http://localhost:${port}`);
+  });
+}
+
+module.exports = app;

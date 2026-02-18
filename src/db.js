@@ -1,11 +1,38 @@
-﻿const path = require("path");
+const fs = require("fs");
+const path = require("path");
 const Database = require("better-sqlite3");
 const dotenv = require("dotenv");
 
 dotenv.config();
 
-const dbPath = process.env.DB_PATH || "./data/petshop.db";
-const resolvedPath = path.resolve(dbPath);
+const isVercel = process.env.VERCEL === "1" || Boolean(process.env.VERCEL_ENV);
+const configuredDbPath = process.env.DB_PATH;
+const resolvedPath = configuredDbPath
+  ? path.resolve(configuredDbPath)
+  : isVercel
+    ? "/tmp/petshop.db"
+    : path.resolve("./data/petshop.db");
+
+function ensureDbDirectory(filePath) {
+  const directory = path.dirname(filePath);
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory, { recursive: true });
+  }
+}
+
+function bootstrapVercelDbIfNeeded(filePath) {
+  if (!isVercel || configuredDbPath) {
+    return;
+  }
+
+  const bundledDbPath = path.resolve(__dirname, "../data/petshop.db");
+  if (!fs.existsSync(filePath) && fs.existsSync(bundledDbPath)) {
+    fs.copyFileSync(bundledDbPath, filePath);
+  }
+}
+
+ensureDbDirectory(resolvedPath);
+bootstrapVercelDbIfNeeded(resolvedPath);
 
 const db = new Database(resolvedPath);
 db.pragma("foreign_keys = ON");

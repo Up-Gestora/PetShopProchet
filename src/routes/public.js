@@ -145,7 +145,12 @@ router.get("/produtos/:slug", (req, res) => {
     .get(req.params.slug);
 
   if (!product) {
-    return res.status(404).render("404", { title: "Produto não encontrado" });
+    return res.status(404).render("error", {
+      title: "Produto não encontrado",
+      statusCode: 404,
+      message: "O produto que você tentou acessar não existe.",
+      error: null,
+    });
   }
 
   const variants = db.prepare("SELECT * FROM product_variants WHERE product_id = ?").all(product.id);
