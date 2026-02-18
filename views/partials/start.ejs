@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | <%= siteName %></title>
+  <meta name="description" content="Pet Shop Prochet em Londrina: produtos para cães e gatos, banho e tosa, atendimento veterinário e agendamento via WhatsApp." />
+  <meta name="keywords" content="pet shop londrina, banho e tosa, veterinário, produtos para cachorros e gatos, retirada na loja" />
+  <meta property="og:title" content="<%= title %> | <%= siteName %>" />
+  <meta property="og:description" content="<%= slogan %>" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/jpeg" href="/images/logo-petshop-prochet.jfif" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-main">
+      <div class="header-slot header-left">
+        <span class="welcome-user">Especialistas em cachorros e gatos</span>
+      </div>
+
+      <a class="logo-center" href="/" aria-label="Pet Shop Prochet">
+        <img class="logo-image" src="/images/logo-petshop-prochet.jfif" alt="Logo Pet Shop Prochet" />
+        <span>
+          <strong>Pet Shop Prochet</strong>
+          <small><%= slogan %></small>
+        </span>
+      </a>
+
+      <div class="header-slot header-right">
+        <a class="icon-pill" href="tel:+554330394077">(43) 3039-4077</a>
+        <a class="btn btn-primary desktop-only" href="https://wa.me/5543996074153?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20um%20servi%C3%A7o%20para%20meu%20pet." target="_blank" rel="noopener noreferrer">Agende Serviço</a>
+        <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="nav-shell">
+      <nav id="main-nav" class="container main-nav" aria-label="Menu principal">
+        <a href="/produtos">Produtos</a>
+        <a href="/#servicos">Serviços</a>
+        <a href="/#busca-pet">Busca de Pet</a>
+        <a href="/#contato">Contato</a>
+        <a class="btn btn-primary mobile-only" href="https://wa.me/5543996074153?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20um%20servi%C3%A7o%20para%20meu%20pet." target="_blank" rel="noopener noreferrer">Agende Serviço</a>
+
+        <form class="header-search" action="/produtos" method="get">
+          <input id="smart-search" type="search" name="q" placeholder="Buscar produtos para seu pet" autocomplete="off" />
+          <button type="submit">Buscar</button>
+          <div id="autocomplete-box" class="autocomplete-box"></div>
+        </form>
+      </nav>
+    </div>
+  </header>
+
+  <% if (flash) { %>
+    <div class="container">
+      <div class="alert <%= flash.type %>"><%= flash.message %></div>
+    </div>
+  <% } %>
+
+  <main>

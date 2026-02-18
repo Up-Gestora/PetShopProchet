@@ -1,0 +1,109 @@
+﻿<%- include("partials/start") %>
+
+<% const whatsappBooking = "https://wa.me/5543996074153?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20um%20servi%C3%A7o%20para%20meu%20pet."; %>
+
+<section class="hero-home">
+  <div class="container hero-grid">
+    <div class="hero-content">
+      <p class="hero-tag">Pet Shop para Cães e Gatos</p>
+      <h1>Cuidado profissional para cachorros e gatos em um só lugar.</h1>
+      <p><%= slogan %> Produtos e serviços com atendimento ágil, humano e focado no bem-estar do seu pet.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/produtos">Ver Lista de Produtos</a>
+        <a class="btn btn-secondary" href="<%= whatsappBooking %>" target="_blank" rel="noopener noreferrer">Agendar Serviço</a>
+      </div>
+      <p class="hero-info">Seg a Sex 09h às 18h | Sáb 09h às 16h</p>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80" alt="Cachorro feliz" />
+      <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=900&q=80" alt="Gato feliz" />
+      <div class="floating-note"><%= slogan %></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="servicos">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Serviços Essenciais</h2>
+      <p>Atendimento para cachorros e gatos com foco em conforto e segurança.</p>
+    </div>
+
+    <div class="uniform-grid service-grid-main">
+      <article class="uniform-card service-card-main">
+        <div class="service-icon" aria-hidden="true"><i class="fas fa-shower"></i></div>
+        <h3>Banho e tosa</h3>
+        <p>Higienização completa e tosa personalizada por porte e necessidade.</p>
+        <a class="btn btn-ghost" href="<%= whatsappBooking %>" target="_blank" rel="noopener noreferrer">Agendar serviço</a>
+      </article>
+
+      <article class="uniform-card service-card-main">
+        <div class="service-icon" aria-hidden="true"><i class="fas fa-stethoscope"></i></div>
+        <h3>Atendimento veterinário</h3>
+        <p>Avaliação clínica e orientação preventiva com equipe especializada.</p>
+        <a class="btn btn-ghost" href="<%= whatsappBooking %>" target="_blank" rel="noopener noreferrer">Agendar consulta</a>
+      </article>
+
+      <article class="uniform-card service-card-main" id="busca-pet">
+        <div class="service-icon" aria-hidden="true"><i class="fas fa-shuttle-van"></i></div>
+        <h3>Busca de Pet</h3>
+        <p>Busca e entrega com ar-condicionado para mais conforto no trajeto.</p>
+        <a class="btn btn-ghost" href="<%= whatsappBooking %>" target="_blank" rel="noopener noreferrer">Solicitar busca</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-soft" id="produtos">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Produtos em Destaque</h2>
+      <p>Lista para reserva e retirada na loja.</p>
+    </div>
+
+    <div class="uniform-grid product-grid-main">
+      <% featuredProducts.slice(0, 8).forEach((product) => { %>
+        <article class="uniform-card product-card-main">
+          <div class="product-media-wrap">
+            <img src="<%= product.images[0] || 'https://via.placeholder.com/600x420' %>" alt="<%= product.name %>" class="product-media" />
+          </div>
+
+          <div class="product-body">
+            <h3><a href="/produtos/<%= product.slug %>"><%= product.name %></a></h3>
+            <p class="product-meta"><%= product.category_name || "Produtos" %></p>
+
+            <div class="price-block">
+              <% if (product.promo_price) { %>
+                <span class="old-value">R$ <%= Number(product.price).toFixed(2) %></span>
+              <% } %>
+              <strong>R$ <%= Number(product.unitPrice).toFixed(2) %></strong>
+            </div>
+
+            <% const whatsappProductMsg = encodeURIComponent(`Olá! Tenho interesse no produto ${product.name} para retirada na loja.`); %>
+            <a class="btn btn-primary btn-full" href="https://wa.me/5543996074153?text=<%= whatsappProductMsg %>" target="_blank" rel="noopener noreferrer">
+              Reservar para retirada
+            </a>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <article class="uniform-card contact-card-minimal">
+      <h2>Contato Rápido</h2>
+      <p>Agendamentos e reservas pelo WhatsApp. Produtos com retirada na loja.</p>
+      <p>Av. Harry Prochet, 700 - Jardim São Jorge, Londrina - PR, 86047-040</p>
+      <p>Telefone: (43) 3039-4077</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://wa.me/5543996074153" target="_blank" rel="noopener noreferrer">Chamar no WhatsApp</a>
+        <a class="btn btn-ghost" href="/produtos">Ver produtos</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<%- include("partials/end") %>

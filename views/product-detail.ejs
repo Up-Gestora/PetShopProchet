@@ -1,0 +1,95 @@
+﻿<%- include("partials/start") %>
+
+<section class="container section product-detail">
+  <div class="detail-gallery">
+    <img src="<%= product.images[0] || 'https://via.placeholder.com/700x500' %>" alt="<%= product.name %>" class="main-image" />
+    <div class="thumbs">
+      <% product.images.forEach((img) => { %>
+        <img src="<%= img %>" alt="Foto de <%= product.name %>" />
+      <% }) %>
+    </div>
+  </div>
+
+  <div class="detail-info">
+    <small><%= product.category_name %> • <%= product.brand || 'Prochet' %></small>
+    <h1><%= product.name %></h1>
+    <p class="rating">Avaliação média: <%= product.rating %>/5 (<%= reviews.length %> avaliações)</p>
+    <p><%= product.description %></p>
+
+    <div class="price-row big">
+      <% if (product.promo_price) { %>
+        <span class="old-price">R$ <%= Number(product.price).toFixed(2) %></span>
+      <% } %>
+      <strong>R$ <%= Number(product.unitPrice).toFixed(2) %></strong>
+    </div>
+
+    <% if (variants.length) { %>
+      <div class="stack-form">
+        <label>Variações disponíveis
+          <select disabled>
+            <% variants.forEach((variant) => { %>
+              <option>
+                <%= variant.variant_type %>: <%= variant.variant_value %>
+                <% if (variant.extra_price > 0) { %>
+                  (+ R$ <%= Number(variant.extra_price).toFixed(2) %>)
+                <% } %>
+              </option>
+            <% }) %>
+          </select>
+        </label>
+      </div>
+    <% } %>
+
+    <% const detailWhatsappMsg = encodeURIComponent(`Olá! Gostaria de comprar o produto ${product.name} e retirar na loja.`); %>
+    <a class="btn btn-primary" href="https://wa.me/5543996074153?text=<%= detailWhatsappMsg %>" target="_blank" rel="noopener noreferrer">
+      Comprar e retirar na loja
+    </a>
+
+    <div class="stock-box">
+      <strong>Retirada:</strong> Av. Harry Prochet, 700 - Jardim São Jorge, Londrina - PR.
+    </div>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <h2>Avaliações e depoimentos</h2>
+  </div>
+
+  <div class="review-list">
+    <% reviews.forEach((review) => { %>
+      <article class="review-item">
+        <strong><%= review.user_name %></strong>
+        <p>Avaliação: <%= review.rating %>/5 <% if (review.verified) { %><span class="verified">Cliente Verificado</span><% } %></p>
+        <% if (review.comment) { %><p><%= review.comment %></p><% } %>
+        <% if (review.photo_url) { %><img src="<%= review.photo_url %>" alt="Avaliação com foto" /> <% } %>
+      </article>
+    <% }); %>
+
+    <% if (!reviews.length) { %>
+      <p>Ainda não há avaliações para este item.</p>
+    <% } %>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <h2>Produtos relacionados</h2>
+  </div>
+  <div class="product-grid">
+    <% related.forEach((item) => { %>
+      <article class="product-card">
+        <a href="/produtos/<%= item.slug %>">
+          <img src="<%= item.images[0] || 'https://via.placeholder.com/600x400' %>" alt="<%= item.name %>" />
+        </a>
+        <div class="product-info">
+          <h3><a href="/produtos/<%= item.slug %>"><%= item.name %></a></h3>
+          <p class="meta">Avaliação: <%= item.rating %>/5</p>
+          <strong>R$ <%= Number(item.unitPrice).toFixed(2) %></strong>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+</section>
+
+<%- include("partials/end") %>

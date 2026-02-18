@@ -1,0 +1,131 @@
+﻿<%- include("partials/start") %>
+
+<section class="container section">
+  <div class="section-head">
+    <h1>Catálogo de Produtos</h1>
+    <p><%= products.length %> itens encontrados • compra com retirada na loja</p>
+  </div>
+
+  <div class="catalog-layout">
+    <aside class="filters">
+      <form action="/produtos" method="get" class="filter-form">
+        <label>Busca
+          <input type="text" name="q" value="<%= filters.q || '' %>" placeholder="Digite um termo" />
+        </label>
+
+        <label>Categoria
+          <select name="category">
+            <option value="">Todas</option>
+            <% navCategories.forEach((cat) => { %>
+              <option value="<%= cat.slug %>" <%= (filters.category === cat.slug) ? 'selected' : '' %>><%= cat.name %></option>
+            <% }) %>
+          </select>
+        </label>
+
+        <label>Marca
+          <select name="brand">
+            <option value="">Todas</option>
+            <% options.brands.forEach((brand) => { %>
+              <option value="<%= brand %>" <%= (filters.brand === brand) ? 'selected' : '' %>><%= brand %></option>
+            <% }); %>
+          </select>
+        </label>
+
+        <label>Tipo de Pet
+          <select name="petType">
+            <option value="">Todos</option>
+            <% options.petTypes.forEach((item) => { %>
+              <option value="<%= item %>" <%= (filters.petType === item) ? 'selected' : '' %>><%= item %></option>
+            <% }); %>
+          </select>
+        </label>
+
+        <label>Idade do Pet
+          <select name="petAge">
+            <option value="">Todas</option>
+            <% options.petAges.forEach((item) => { %>
+              <option value="<%= item %>" <%= (filters.petAge === item) ? 'selected' : '' %>><%= item %></option>
+            <% }); %>
+          </select>
+        </label>
+
+        <label>Porte
+          <select name="petSize">
+            <option value="">Todos</option>
+            <% options.petSizes.forEach((item) => { %>
+              <option value="<%= item %>" <%= (filters.petSize === item) ? 'selected' : '' %>><%= item %></option>
+            <% }); %>
+          </select>
+        </label>
+
+        <label>Preço mínimo
+          <input type="number" min="0" step="0.01" name="min" value="<%= filters.min || '' %>" />
+        </label>
+
+        <label>Preço máximo
+          <input type="number" min="0" step="0.01" name="max" value="<%= filters.max || '' %>" />
+        </label>
+
+        <label>Avaliação mínima
+          <select name="rating">
+            <option value="">Todas</option>
+            <option value="3" <%= filters.rating === '3' ? 'selected' : '' %>>3+</option>
+            <option value="4" <%= filters.rating === '4' ? 'selected' : '' %>>4+</option>
+            <option value="5" <%= filters.rating === '5' ? 'selected' : '' %>>5</option>
+          </select>
+        </label>
+
+        <label class="checkbox-row">
+          <input type="checkbox" name="promo" value="1" <%= filters.promo === '1' ? 'checked' : '' %> />
+          Apenas promoções
+        </label>
+
+        <label>Ordenar por
+          <select name="sort">
+            <option value="price_asc" <%= filters.sort === 'price_asc' ? 'selected' : '' %>>Menor preço</option>
+            <option value="price_desc" <%= filters.sort === 'price_desc' ? 'selected' : '' %>>Maior preço</option>
+            <option value="best_sellers" <%= filters.sort === 'best_sellers' ? 'selected' : '' %>>Mais vendidos</option>
+            <option value="top_rated" <%= filters.sort === 'top_rated' ? 'selected' : '' %>>Melhor avaliados</option>
+            <option value="launch" <%= (!filters.sort || filters.sort === 'launch') ? 'selected' : '' %>>Lançamentos</option>
+          </select>
+        </label>
+
+        <button class="btn btn-primary" type="submit">Aplicar filtros</button>
+      </form>
+    </aside>
+
+    <div class="product-grid">
+      <% products.forEach((product) => { %>
+        <article class="product-card">
+          <a href="/produtos/<%= product.slug %>">
+            <img src="<%= product.images[0] || 'https://via.placeholder.com/600x400' %>" alt="<%= product.name %>" />
+          </a>
+          <div class="product-info">
+            <small><%= product.category_name %> • <%= product.pet_type || 'Pet' %></small>
+            <h3><a href="/produtos/<%= product.slug %>"><%= product.name %></a></h3>
+            <p class="meta">Marca: <%= product.brand || 'Prochet' %> • Avaliação: <%= product.rating %>/5</p>
+            <div class="price-row">
+              <% if (product.promo_price) { %>
+                <span class="old-price">R$ <%= Number(product.price).toFixed(2) %></span>
+              <% } %>
+              <strong>R$ <%= Number(product.unitPrice).toFixed(2) %></strong>
+            </div>
+            <% const whatsappMsg = encodeURIComponent(`Olá! Tenho interesse no produto ${product.name} para retirada na loja.`); %>
+            <a class="btn btn-primary btn-block" href="https://wa.me/5543996074153?text=<%= whatsappMsg %>" target="_blank" rel="noopener noreferrer">
+              Comprar e retirar na loja
+            </a>
+          </div>
+        </article>
+      <% }); %>
+
+      <% if (!products.length) { %>
+        <div class="empty-box">
+          <h3>Nenhum produto encontrado</h3>
+          <p>Teste remover filtros ou alterar sua busca.</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include("partials/end") %>

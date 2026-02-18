@@ -1,0 +1,113 @@
+﻿  </main>
+
+  <a
+    class="whatsapp-float"
+    href="https://wa.me/5543996074153?text=Ol%C3%A1!%20Tenho%20interesse%20nos%20produtos%20do%20Pet%20Shop%20Prochet%20para%20retirada%20na%20loja."
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Atendimento via WhatsApp"
+  >
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+  </a>
+
+  <footer id="contato" class="site-footer">
+    <div class="container footer-grid-main">
+      <section>
+        <div class="footer-brand">
+          <img src="/images/logo-petshop-prochet.jfif" alt="Logo Pet Shop Prochet" class="footer-logo" />
+          <h3>Pet Shop Prochet</h3>
+        </div>
+        <p><%= slogan %> Produtos e serviços especializados para cachorros e gatos.</p>
+        <div class="social-links">
+          <a href="https://wa.me/5543996074153" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">WhatsApp</a>
+          <a href="tel:+554330394077" aria-label="Telefone">(43) 3039-4077</a>
+          <a href="https://www.instagram.com/pet_prochet/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a>
+        </div>
+      </section>
+
+      <section>
+        <h3>Links Úteis</h3>
+        <a href="/produtos">Produtos</a>
+        <a href="https://wa.me/5543996074153?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20um%20servi%C3%A7o%20para%20meu%20pet." target="_blank" rel="noopener noreferrer">Serviços</a>
+        <a href="/#busca-pet">Busca de Pet</a>
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Termos de Uso</a>
+      </section>
+
+      <section>
+        <h3>Contato e Endereço</h3>
+        <p>Av. Harry Prochet, 700 - Jardim São Jorge</p>
+        <p>Londrina - PR, 86047-040</p>
+        <p>Seg a Sex 09h às 18h | Sáb 09h às 16h</p>
+        <p>WhatsApp: (43) 99607-4153</p>
+        <p>Telefone: (43) 3039-4077</p>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      © <%= new Date().getFullYear() %> Pet Shop Prochet - Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const menuToggle = document.getElementById("menu-toggle");
+      const mainNav = document.getElementById("main-nav");
+
+      if (menuToggle && mainNav) {
+        menuToggle.addEventListener("click", () => {
+          const isOpen = mainNav.classList.toggle("open");
+          menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        });
+      }
+
+      const searchInput = document.getElementById("smart-search");
+      const autocompleteBox = document.getElementById("autocomplete-box");
+
+      if (searchInput && autocompleteBox) {
+        let timer;
+
+        const hideAutocomplete = () => {
+          autocompleteBox.style.display = "none";
+          autocompleteBox.innerHTML = "";
+        };
+
+        searchInput.addEventListener("input", () => {
+          const query = searchInput.value.trim();
+          clearTimeout(timer);
+
+          if (query.length < 2) {
+            hideAutocomplete();
+            return;
+          }
+
+          timer = setTimeout(async () => {
+            try {
+              const response = await fetch(`/api/search/suggestions?q=${encodeURIComponent(query)}`);
+              const suggestions = await response.json();
+
+              if (!Array.isArray(suggestions) || !suggestions.length) {
+                hideAutocomplete();
+                return;
+              }
+
+              autocompleteBox.innerHTML = suggestions
+                .map((item) => `<a href="/produtos/${item.slug}">${item.name}</a>`)
+                .join("");
+              autocompleteBox.style.display = "block";
+            } catch (error) {
+              hideAutocomplete();
+            }
+          }, 170);
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!autocompleteBox.contains(event.target) && event.target !== searchInput) {
+            hideAutocomplete();
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

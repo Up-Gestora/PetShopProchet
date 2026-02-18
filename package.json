@@ -1,0 +1,31 @@
+﻿{
+  "name": "codigo_petshop",
+  "version": "1.0.0",
+  "description": "Site institucional e catálogo leve para Pet Shop Prochet",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/seed.js"
+  },
+  "keywords": [
+    "petshop",
+    "ecommerce",
+    "express",
+    "sqlite"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.6.2",
+    "dayjs": "^1.11.19",
+    "dotenv": "^17.2.4",
+    "ejs": "^4.0.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
+
